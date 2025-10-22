@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+   python:
+      build: ./backend
+      working_dir: /app
+      volumes:
+        - ./backend:/app
+        
+      
+      networks:
+       - my_network
+      ports:
+       - "5000:5000"
+      depends_on:
+       - node 
+
+   node:
+      build: ./frontend
+      working_dir:
+        /app
+      volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      networks:
+       - "my_network"
+      ports:
+       - "3000:3000"
+      healthcheck:
+         test:
+              ["CMD", "curl","-f","https://localhost:5000/health"]
+         interval: 30s
+         timeout: 10s
+         retries: 3
+         start_period: 10s
+networks:
+    my_network:         
+
+volumes:
+    my_volume:

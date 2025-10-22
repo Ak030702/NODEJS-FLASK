@@ -4,7 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
+RUN npn install express
+
 RUN npm install
+
+
 
 COPY . .
 
